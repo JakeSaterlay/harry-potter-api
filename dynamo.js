@@ -1,5 +1,4 @@
 const AWS = require("aws-sdk");
-const { param } = require("express/lib/request");
 require("dotenv").config();
 
 AWS.config.update({
@@ -20,6 +19,16 @@ const getCharacters = async () => {
 	return characters;
 };
 
+const getCharacterById = async (id) => {
+	const params = {
+		TableName: TABLE_NAME,
+		Key: {
+			id,
+		},
+	};
+	return await dynamoClient.get(params).promise();
+};
+
 const addOrUpdateCharacter = async (character) => {
 	const params = {
 		TableName: TABLE_NAME,
@@ -28,4 +37,20 @@ const addOrUpdateCharacter = async (character) => {
 	return await dynamoClient.put(params).promise();
 };
 
-getCharacters();
+const deleteCharacter = async (id) => {
+	const params = {
+		TableName: TABLE_NAME,
+		Key: {
+			id,
+		},
+	};
+	return await dynamoClient.delete(params).promise();
+};
+
+module.exports = {
+	dynamoClient,
+	getCharacters,
+	getCharacterById,
+	addOrUpdateCharacter,
+	deleteCharacter,
+};
