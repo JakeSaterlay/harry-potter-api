@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const {
 	getCharacters,
 	getCharacterById,
@@ -6,7 +7,7 @@ const {
 	deleteCharacter,
 } = require("./dynamo");
 const app = express();
-
+app.use(cors());
 app.get("/", (req, res) => {
 	res.send("hello world");
 });
@@ -32,7 +33,7 @@ app.get("/characters/:id", async (req, res) => {
 	}
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
 	console.log("listening on port " + port);
